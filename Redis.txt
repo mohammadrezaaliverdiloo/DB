@@ -1,0 +1,11 @@
+set quera college
+hset quera:college:users:profiles:matin username matin password 12341234 email moeini.imp@gmail.com company quera technologies '["python","django"]'
+sadd quera:users:52:profile:track "quera.org"
+sadd quera:users:52:profile:track "quera.org/college"
+sadd quera:users:52:profile:track "quera.org/college/python"
+sadd quera:users:52:profile:track "quera.org/college/python/12314"
+sadd quera:users:52:profile:track "quera.org/college/django/81381"
+sadd quera:users:52:profile:track "quera.org/college/nosql"
+sadd quera:users:52:profile:track "quera.org/college/7272"
+sadd quera:users:52:profile:track "quera.org/courses/141231"
+sadd quera:users:52:profile:track "quera.org/college/landpage/14963/nosql"

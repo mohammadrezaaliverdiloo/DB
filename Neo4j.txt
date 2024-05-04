@@ -1,0 +1,32 @@
+create (d:Developer {name:"Matin"})
+create (c:Developer {name:"Ali"})
+create (p:Developer {name:"Moein"})
+create (d)-[:LEADS]->(p)
+create (c)-[:LEADS]->(d);
+
+
+
+MATCH (se:Developer)-[:WORKING_IN]-(c:Company {name:"Quera"})
+RETURN se;
+
+
+MATCH (p:Developer {name:"Matin"})
+SET p.roll= "Technical Section Lead", p.org_email= "Matin@quera.org", p.chapter= "Education", p.leader= "Ali";
+RETURN p;
+
+
+MATCH (p:Staff)
+WHERE p.age=22
+SET p.roll="Developer",p.status ="Remote";
+MATCH (p:Staff)
+WHERE p.status="Hybrid"
+SET p.roll="Product Manager";
+MATCH (p:Staff)-[r:ADVISE_TO]->()
+SET p.roll="Product Designer",p.status ="Hybrid";
+MATCH (p:Staff)
+WHERE p.age=29
+SET p.roll= "BL Manager", p.status= "On_site";
+
+
+
+

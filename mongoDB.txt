@@ -1,0 +1,68 @@
+use quera
+db.createCollection("users")
+db.users.insertMany([
+{
+  name: "Moein",
+  university: "HNU",
+  Company: "Quera",
+  email: "moein@gmail.com",
+  technologies: ["php", "laravel"],
+},
+{
+  name: "Matin",
+  university: "IAU",
+  Company: "Quera",
+  email: "matin@gmail.com",
+  technologies: ["python", "django","go","nosql"],
+},
+{
+  name: "younes",
+  university: "SU",
+  Company: "Quera",
+  email: "youness@gmail.com",
+  technologies: ["php", "laravel","GO","SQL"],
+}]
+)
+
+
+
+use quera
+db.createCollection("users")
+db.users.find( { technologies: { $in: [ "php" ,"laravel" ] } } )
+
+
+
+use quera
+createCollection("users")
+db.users.find({age : {$lt : 25}},{_id:0,technologies:1})
+
+
+
+
+
+use quera
+db.createCollection("techs")
+db.techs.updateMany(
+    {langs: {$in : ["python"]}},
+
+    {
+        $set: {
+            langs:["python"],
+            version:"3.12.0",
+            usage:["backend","AI","DataAnalytics"]
+
+        }
+    },
+    {upsert:true}
+
+)
+
+
+
+use quera
+db.users.deleteMany({})
+db.techs.deleteMany({})
+db.createCollection("hacked")
+db.hacked.insertOne({
+    hacked_by : "me!"
+})

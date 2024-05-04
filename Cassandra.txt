@@ -1,0 +1,63 @@
+-- create address UDT here
+CREATE TYPE address (
+    street text,
+    city text,
+    state text,
+    zip int
+);
+
+-- create customers table here
+CREATE TABLE customers (
+    customer_id UUID,
+    name text ,
+    email text,
+    addresses list<frozen<address>>,
+    contact tuple<text, text>,
+    order_ids set<UUID>,
+    last_order_date timestamp,
+    PRIMARY KEY ((customer_id),last_order_date)
+)WITH CLUSTERING ORDER BY (last_order_date DESC);
+
+
+
+-- query one
+SELECT title,genre,sale_price
+FROM books_by_genre
+GROUP BY genre;
+-- query two
+SELECT author
+FROM books_by_author
+GROUP BY author;
+
+
+
+-- query one
+ select * from trips ;
+-- query two
+select * from trips where destination='Paris';
+-- query three
+select id from trips where destination='London' and trip_date > '2020-01-01';
+-- query four
+select destination,trip_date,id,age,name from trips where destination='Aligoodarz' and trip_date > '2022-11-01' and trip_date < '2023-11-30' order by trip_date DESC , id asc ALLOW FILTERING;
+
+
+
+begin batch
+insert into book (title,author,pub_year,book_id) values ('Just for fun','younesious',2001,1f6aeb16-4e05-4c1a-9a4c-3d13ebcc1a0a)
+update book set pub_year = 2001 where book_id=1f6aeb16-4e05-4c1a-9a4c-3d13ebcc1a0b
+delete from book where book_id=1f6aeb16-4e05-4c1a-9a4c-3d13ebcc1a0c
+apply batch;
+
+
+-- query one
+select department,avg(grade) as average from grades_by_dept where department='Computer Science';
+-- query two
+select major,count(name) as count from students_by_major group by major;
+-- query three
+select department,sum(credits) from courses group by department;
+-- query four
+select department,course_id,avg(grade) as average from enrollments where year=2023 and semester='Fall' and department='Computer Science' group by course_id allow filtering;
+-- query five
+select major,avg(gpa) as gpa_average,count(student_id) as student_count from students_by_major where major='Mathematics';
+-- query six
+select department,course_id,min(grade),max(grade),avg(grade) from grades_by_dept group by department,course_id;
