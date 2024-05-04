@@ -1,0 +1,126 @@
+-- Section1
+SELECT ACCOUNT_NO
+FROM accounts
+GROUP BY ACCOUNT_NO
+ORDER BY COUNT(*) DESC;
+-- Section2
+SELECT YEAR(DATE) ,DATE 
+FROM accounts
+GROUP BY DATE
+HAVING COUNT(*) > 10
+ORDER BY COUNT(*) DESC;
+-- Section3
+SELECT acc.ACCOUNT_NO, MIN(acc.BALANCE) AS BALANCE
+    FROM accounts acc,
+         (SELECT ACCOUNT_NO, MAX(DATE) AS MAX_DATE
+          FROM accounts
+          GROUP BY ACCOUNT_NO) g_acc
+    WHERE acc.ACCOUNT_NO = g_acc.ACCOUNT_NO
+      AND acc.DATE = g_acc.MAX_DATE
+      AND acc.BALANCE < -1000000000
+    GROUP BY acc.ACCOUNT_NO
+    ORDER BY BALANCE;
+-- Section4
+select ACCOUNT_NO from ( select ACCOUNT_NO,WITHDRAWAL from accounts
+where ACCOUNT_NO=45532
+and WITHDRAWAL=1000000
+) as with_d
+union
+select ACCOUNT_NO from (select ACCOUNT_NO,DEPOSIT from accounts where ACCOUNT_NO=32124
+and DEPOSIT=1000000
+) as dep_t
+
+
+
+
+SELECT *
+FROM (SELECT job_id,
+             squad_id,
+             SUM(salary) AS salary
+      FROM employees
+      GROUP BY job_id, squad_id
+      ORDER BY job_id, squad_id) AS A1
+UNION ALL
+SELECT *
+FROM (SELECT job_id,
+             NULL,
+             SUM(salary) AS salary
+      FROM employees
+      GROUP BY job_id
+      ORDER BY job_id) AS A2
+UNION ALL
+SELECT *
+FROM (SELECT NULL,
+             squad_id,
+             SUM(salary) AS salary
+      FROM employees
+      GROUP BY squad_id
+      ORDER BY squad_id) AS A3
+UNION ALL
+SELECT NULL,
+       NULL,
+       SUM(salary) AS salary
+FROM employees;
+
+
+
+select distinct users.id ,username from users
+join likes ON likes.user_id = users.id
+where YEAR(likes.created_at) = 2021 and MONTH(likes.created_at) = 10;
+
+
+
+(select 'cart' as funnel_stage ,
+format(c.user_id/count(u.id),4) as conversion_rate from users u ,
+(select count(user_id) as user_id from (select distinct user_id from carts) c) 
+c group by c.user_id)
+union all
+(select 'payment' as funnel_stage , format(p.user_id /count(u.id),4) 
+as conversion_rate from users u ,
+(select count(user_id) as user_id from 
+(select distinct c.user_id from carts c join payments p on c.id = p.cart_id) p) 
+p group by p.user_id);
+
+
+
+SELECT questions.id AS question_id,
+timestampdiff(second , questions.creation_date, min(answers.creation_date)) AS time_to_answer
+FROM questions
+JOIN answers
+on questions.id = answers.question_id
+group by questions.id
+order by time_to_answer desc, questions.id asc
+limit 500;
+
+
+
+SELECT students.id, students.name 
+FROM students
+LEFT JOIN student_courses ON students.id = student_courses.student_id AND student_courses.course_id = 7
+WHERE student_courses.id IS NULL
+ORDER BY students.id;
+
+
+
+with recursive categoriesForId as (
+    select c.id, c.parent_id, c.title, c.slug, 0 as depth
+    from categories c
+    where c.id = 741
+    union all
+    select c2.id, c2.parent_id, c2.title, c2.slug, depth - 1
+    from categories c2
+             join categoriesForId c on c2.id = c.parent_id
+
+)
+select c.title,c.slug
+from categoriesForId c order by c.depth;
+
+
+
+
+
+
+
+
+
+
